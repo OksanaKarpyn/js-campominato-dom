@@ -62,16 +62,50 @@
 // prendo contenitore  dove staranno i miei box
 let boxItems = document.querySelector('.box-items');
 
-// genero 100box con ciclo
+
+
+// function bomb
+function bomb(dificolta) {
+    let arrayBomb = []
+    while ( arrayBomb.length < 16) {
+        let newNumber=random(1,dificolta); 
+      
+       if(!arrayBomb.includes(newNumber)){
+        arrayBomb.push(newNumber);
+       }
+    }
+   
+    return arrayBomb;
+}
+
+
+
+
+
+// genero box con ciclo custom
 function boxes(numero) {
     boxItems.innerHTML = '';
+    const bombs = bomb(numero)
+    let endGame =false;
     for (let i = 1; i <= numero; i++) {
         // console.log(`box-${numero}`);
-        let item = elementBox('div',`box-${numero}`, i);
+        let item = elementBox('div', `box-${numero}`, i);
 
         item.addEventListener('click', function () {
-            this.classList.add('blue');
             console.log(i, 'numero cliccato');
+
+         if(!endGame){
+            const isBomba = bombs.includes(i);
+            if(isBomba){
+              item.classList.add('red');
+              alert('hai perso');
+              endGame=true;
+            }
+            else{
+              this.classList.add('blue');
+            }
+         }
+
         })
 
 
@@ -80,21 +114,22 @@ function boxes(numero) {
 }
 
 
-
 // bottone
-let level = document.querySelector('.list-select');
+// let level = document.querySelector('.list-select');
 let btnPlay = document.querySelector('.btn').addEventListener('click', function () {
     let select = document.querySelector('#select').value;
     boxes(select);
-    
+
 })
 
 
-// change select
-// document.querySelector('#select').addEventListener('change', function (e) {
-//     console.log(e.currentTarget.value);
-//     boxes(e.currentTarget.value);
-// })
+
+
+
+// function random
+function random(min,max) {
+    return Math.floor(Math.random() * max) + min;
+}
 
 
 
